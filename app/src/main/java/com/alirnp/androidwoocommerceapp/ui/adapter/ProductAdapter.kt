@@ -11,25 +11,28 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product.view.*
 import me.gilo.woodroid.models.Product
 
-
 class ProductAdapter(private val items: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.Holder>() {
 
-    private fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
-        return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
+    private fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View {
+        return LayoutInflater.from(context).inflate(layoutRes, this, false)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val inflatedView = parent.inflate(R.layout.item_product, false)
+        val inflatedView = parent.inflate(R.layout.item_product)
         return Holder(items,inflatedView)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val itemPhoto = items[position]
-        holder.bindPhoto(itemPhoto)
+        val item = items[position]
+        holder.bind(item)
     }
 
     override fun getItemCount() = items.size
+
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
 
 
     class Holder(items: List<Product> , v: View) : RecyclerView.ViewHolder(v) {
@@ -40,12 +43,19 @@ class ProductAdapter(private val items: List<Product>) :
             }
         }
 
-        fun bindPhoto(product: Product) {
+        fun bind(product: Product) {
 
+            // set product name
             itemView.textView_name.text = product.name
 
+            // load product image into imageView
+            loadProductImage(product)
+        }
+
+        private fun loadProductImage(product: Product) {
             if (product.images != null && product.images.size > 0) {
-                val primaryImage = product.images[0].src
+                val images = product.images
+                val primaryImage = images[0].src
                 Picasso.get().load(primaryImage).into(itemView.imageView_photo)
             }
         }

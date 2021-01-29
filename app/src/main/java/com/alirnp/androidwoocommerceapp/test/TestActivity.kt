@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alirnp.androidwoocommerceapp.R
-import com.alirnp.androidwoocommerceapp.api.WoocommerceApi
+import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
 import kotlinx.android.synthetic.main.activity_test.*
 import me.gilo.woodroid.models.Product
@@ -23,8 +23,7 @@ class TestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
 
-        linearLayoutManager = LinearLayoutManager(this@TestActivity)
-        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.showShimmerAdapter()
 
         WoocommerceApi.instance.ProductRepository().products()
             .enqueue(object : Callback<List<Product>> {
@@ -55,8 +54,5 @@ class TestActivity : AppCompatActivity() {
                 }
 
             })
-
-
-
     }
 }
