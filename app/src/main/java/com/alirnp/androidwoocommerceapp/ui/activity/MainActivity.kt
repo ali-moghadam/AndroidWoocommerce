@@ -1,15 +1,11 @@
-package com.alirnp.androidwoocommerceapp
+package com.alirnp.androidwoocommerceapp.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
+import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.test.TestActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import me.gilo.woodroid.models.Product
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 

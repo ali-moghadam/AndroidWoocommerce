@@ -1,4 +1,4 @@
-package com.alirnp.androidwoocommerceapp.auth
+package com.alirnp.androidwoocommerceapp.core.constant
 
 enum class ApiVersion {
     API_VERSION1 {

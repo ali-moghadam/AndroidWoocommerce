@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alirnp.androidwoocommerceapp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product.view.*
-import me.gilo.woodroid.models.Product
+import com.alirnp.androidwoocommerceapp.model.Product
 
 class ProductAdapter(private val items: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.Holder>() {
@@ -35,7 +35,7 @@ class ProductAdapter(private val items: List<Product>) :
     }
 
 
-    class Holder(items: List<Product> , v: View) : RecyclerView.ViewHolder(v) {
+    class Holder(items: List<Product>, v: View) : RecyclerView.ViewHolder(v) {
 
         init {
             itemView.setOnClickListener {

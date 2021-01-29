@@ -8,7 +8,7 @@ import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
 import kotlinx.android.synthetic.main.activity_test.*
-import me.gilo.woodroid.models.Product
+import com.alirnp.androidwoocommerceapp.model.Product
 import retrofit2.Callback
 import retrofit2.Response
 

@@ -1,28 +1,79 @@
 package com.alirnp.androidwoocommerceapp.repository
 
-import androidx.lifecycle.LiveData
-import me.gilo.woodroid.models.Product
-import retrofit2.Response
+import com.alirnp.androidwoocommerceapp.repository.api.ProductAPI
+import com.alirnp.androidwoocommerceapp.model.Product
+import com.alirnp.androidwoocommerceapp.core.helper.filter.ProductFilter
+import retrofit2.Call
 
-class ProductRepository () {
+import java.util.HashMap
 
-    fun getProducts() =
-        object : NetworkBoundResource<Product, Product>(){
-            override suspend fun saveCallResult(item: Product) {
-                TODO("Not yet implemented")
-            }
+class ProductRepository(baseUrl: String, consumerKey: String, consumerSecret: String) :
+    WooRepository(baseUrl, consumerKey, consumerSecret) {
 
-            override fun shouldFetch(data: Product?): Boolean {
-                TODO("Not yet implemented")
-            }
+    private val apiService: ProductAPI
 
-            override suspend fun loadFromDb(): LiveData<Product> {
-                TODO("Not yet implemented")
-            }
+    init {
+        apiService = retrofit.create(ProductAPI::class.java)
+    }
 
-            override fun createCall(): LiveData<Response<Product>> {
-                TODO("Not yet implemented")
-            }
+    fun create(product: Product): Call<Product> {
+        return apiService.create(product)
+    }
 
-        }
+
+    fun product(id: Int): Call<Product> {
+        return apiService.view(id)
+    }
+
+    fun products(): Call<List<Product>> {
+        return apiService.list()
+    }
+
+    fun filter(filters: Map<String, String>): Call<List<Product>> {
+        return apiService.filter(filters)
+    }
+
+    fun products(productFilter: ProductFilter): Call<List<Product>> {
+        return filter(productFilter.filters)
+    }
+
+    fun search(term: String): Call<List<Product>> {
+        val productFilter = ProductFilter()
+        productFilter.search = term
+
+        return filter(productFilter.filters)
+    }
+
+    fun products(page: Int, per_page: Int): Call<List<Product>> {
+        val productFilter = ProductFilter()
+        productFilter.page = page
+        productFilter.per_page = per_page
+
+        return filter(productFilter.filters)
+    }
+
+    fun products(page: Int): Call<List<Product>> {
+        val productFilter = ProductFilter()
+        productFilter.page = page
+
+        return filter(productFilter.filters)
+    }
+
+    fun update(id: Int, product: Product): Call<Product> {
+        return apiService.update(id, product)
+    }
+
+    fun delete(id: Int): Call<Product> {
+        return apiService.delete(id)
+    }
+
+    fun delete(id: Int, force: Boolean): Call<Product> {
+        return apiService.delete(id, force)
+    }
+
+    fun products(filters: HashMap<String, String>): Call<List<Product>> {
+        return apiService.filter(filters)
+    }
+
+
 }

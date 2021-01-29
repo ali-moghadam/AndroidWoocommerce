@@ -1,4 +1,4 @@
-package me.gilo.woodroid.models
+package com.alirnp.androidwoocommerceapp.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

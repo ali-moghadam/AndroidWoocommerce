@@ -1,6 +1,6 @@
-package com.alirnp.apicall.auth
+package com.alirnp.androidwoocommerceapp.repository.api
 
-import me.gilo.woodroid.models.Category
+import com.alirnp.androidwoocommerceapp.model.Category
 import retrofit2.Call
 import retrofit2.http.*
 

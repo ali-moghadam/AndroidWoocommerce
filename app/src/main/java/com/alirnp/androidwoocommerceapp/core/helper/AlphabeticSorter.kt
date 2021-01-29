@@ -1,4 +1,4 @@
-package com.alirnp.apicall.auth
+package com.alirnp.androidwoocommerceapp.core.helper
 
 import org.apache.http.NameValuePair
 

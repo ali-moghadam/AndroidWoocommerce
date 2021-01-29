@@ -1,4 +1,4 @@
-package me.gilo.woodroid.models
+package com.alirnp.androidwoocommerceapp.model
 
 import android.os.Parcel
 

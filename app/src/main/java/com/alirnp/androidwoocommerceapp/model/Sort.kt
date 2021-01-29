@@ -1,4 +1,4 @@
-package me.gilo.woodroid.models.filters
+package com.alirnp.androidwoocommerceapp.model
 
 enum class Sort {
 

@@ -1,6 +1,7 @@
-package me.gilo.woodroid.models.filters
+package com.alirnp.androidwoocommerceapp.core.helper.filter
 
-import me.gilo.woodroid.utils.Converter
+import com.alirnp.androidwoocommerceapp.model.Sort
+import com.alirnp.androidwoocommerceapp.core.converter.Converter
 
 import java.util.*
 

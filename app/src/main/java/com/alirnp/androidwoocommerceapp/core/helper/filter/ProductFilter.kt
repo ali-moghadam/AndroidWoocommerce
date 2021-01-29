@@ -1,4 +1,4 @@
-package me.gilo.woodroid.models.filters
+package com.alirnp.androidwoocommerceapp.core.helper.filter
 
 class ProductFilter : ListFilter() {
     var parent: IntArray? = null

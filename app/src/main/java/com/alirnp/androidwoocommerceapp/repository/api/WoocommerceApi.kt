@@ -1,7 +1,7 @@
 package com.alirnp.androidwoocommerceapp.repository.api
 
 import com.alirnp.androidwoocommerceapp.Config
-import com.alirnp.androidwoocommerceapp.auth.Woocommerce
+import com.alirnp.androidwoocommerceapp.core.woocomere.Woocommerce
 
 object WoocommerceApi {
 

@@ -1,7 +1,7 @@
-package me.gilo.woodroid.data.api
+package com.alirnp.androidwoocommerceapp.repository.api
 
 
-import me.gilo.woodroid.models.Product
+import com.alirnp.androidwoocommerceapp.model.Product
 import retrofit2.Call
 import retrofit2.http.*
 

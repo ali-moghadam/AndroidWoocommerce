@@ -1,4 +1,7 @@
-package com.alirnp.androidwoocommerceapp.auth
+package com.alirnp.androidwoocommerceapp.core.woocomere
+
+import com.alirnp.androidwoocommerceapp.core.constant.ApiVersion
+import com.alirnp.androidwoocommerceapp.repository.ProductRepository
 
 class Woocommerce(siteUrl: String, apiVerion: ApiVersion, consumerKey: String, consumerSecret: String) {
     companion object {

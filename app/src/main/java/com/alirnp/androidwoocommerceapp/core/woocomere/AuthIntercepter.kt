@@ -1,10 +1,8 @@
 package com.alirnp.apicall.auth
 
 import android.util.Base64
-import android.util.Log
-import okhttp3.HttpUrl
+import com.alirnp.androidwoocommerceapp.core.helper.AlphabeticSorter
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
 import org.apache.http.NameValuePair
 import org.apache.http.client.utils.URLEncodedUtils
