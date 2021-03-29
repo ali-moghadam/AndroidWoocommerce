@@ -5,8 +5,6 @@ import com.alirnp.androidwoocommerceapp.repository.ProductRepository
 
 class Woocommerce(siteUrl: String, apiVersion: ApiVersion, consumerKey: String, consumerSecret: String) {
     companion object {
-        val API_V1 = ApiVersion.API_VERSION1
-        val API_V2 = ApiVersion.API_VERSION2
         val API_V3 = ApiVersion.API_VERSION3
     }
 
@@ -59,10 +57,5 @@ class Woocommerce(siteUrl: String, apiVersion: ApiVersion, consumerKey: String, 
         fun build(): Woocommerce {
             return Woocommerce(siteUrl, apiVersion, consumerKey, consumerSecret)
         }
-
-
     }
-
-
-
 }

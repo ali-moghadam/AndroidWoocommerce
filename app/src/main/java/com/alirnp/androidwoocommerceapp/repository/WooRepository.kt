@@ -1,5 +1,6 @@
 package com.alirnp.androidwoocommerceapp.repository
 
+import android.util.Log
 import com.alirnp.apicall.auth.AuthIntercepter
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -10,12 +11,13 @@ import java.util.concurrent.TimeUnit
 
 open class WooRepository(baseUrl: String, consumerKey: String, consumerSecret: String) {
 
+    private  val TAG = "LOG_ME"
     //TODO ('Apply DI or single instance on this')
     var retrofit: Retrofit
 
     init {
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val loggingInterceptor = HttpLoggingInterceptor { logger -> Log.i(TAG, "retrofit log: $logger") }
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
 
         val gson = GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")

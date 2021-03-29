@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.databinding.ActivityMainBinding
-import com.alirnp.androidwoocommerceapp.model.Image
 import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.repository.roomDB.AppDatabase
@@ -35,17 +34,14 @@ class MainActivity : AppCompatActivity() {
         initRecyclerView()
         getProducts()
 
-        val product = Product();
-        product.id = 64
-        product.name = "directly"
-        product.images = listOf(Image())
-
-        AppDatabase.getInstance(this).userDao()
-            .insert(product)
+        AppDatabase.getInstance(this@MainActivity).productDao()
+            .getAll()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Toast.makeText(this, "OK", Toast.LENGTH_LONG).show()
+                for (product in it) {
+                    Log.i(TAG, "onCreate: ${product.name}")
+                }
             }, {
                 Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
                 Log.i(TAG, "onCreate: ${it.message}")
@@ -83,9 +79,20 @@ class MainActivity : AppCompatActivity() {
     private fun onResponseProducts(response: Response<List<Product>>) {
         Log.i(TAG, "onResponse: ${response.code()}")
 
-        if (response.code() == 200) {
-            response.body()?.let {
-                declareRecyclerView(it)
+        if (response.isSuccessful) {
+            response.body()?.let { productList ->
+                declareRecyclerView(productList)
+
+                AppDatabase.getInstance(this@MainActivity).productDao()
+                    .insertAll(productList)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        Toast.makeText(this, "OK", Toast.LENGTH_LONG).show()
+                    }, {
+                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                        Log.i(TAG, "onCreate: ${it.message}")
+                    })
             }
         }
     }

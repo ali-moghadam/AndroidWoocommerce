@@ -1,26 +1,23 @@
 package com.alirnp.androidwoocommerceapp.repository.roomDB
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.alirnp.androidwoocommerceapp.model.Product
 import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Single
 
 @Dao
-interface UserDao {
+interface ProductDao {
     @Query("SELECT * FROM product")
-    fun getAll(): List<Product>
+    fun getAll(): Single<List<Product>>
 
     @Query("SELECT * FROM product WHERE id IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<Product>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: Product) : Completable
 
-    @Insert
-    fun insertAll(vararg users: Product)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll( users: List<Product>) : Completable
 
     @Delete
     fun delete(user: Product)

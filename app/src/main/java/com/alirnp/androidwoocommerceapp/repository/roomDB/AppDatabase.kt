@@ -3,14 +3,14 @@ package com.alirnp.androidwoocommerceapp.repository.roomDB
 import android.content.Context
 import androidx.room.*
 import com.alirnp.androidwoocommerceapp.model.Product
-import com.alirnp.androidwoocommerceapp.repository.roomDB.converter.ImageListConverter
+import com.alirnp.androidwoocommerceapp.repository.roomDB.converter.ProductConverter
 
-@Database(entities = arrayOf(Product::class), version = 3)
-@TypeConverters(ImageListConverter::class)
+@Database(entities = arrayOf(Product::class), version = 8)
+@TypeConverters(ProductConverter::class)
 
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun userDao(): UserDao
+    abstract fun productDao(): ProductDao
 
     companion object {
 
