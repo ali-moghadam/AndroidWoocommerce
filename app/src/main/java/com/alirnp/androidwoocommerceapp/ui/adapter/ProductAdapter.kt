@@ -53,11 +53,10 @@ class ProductAdapter(private val items: List<Product>) :
         }
 
         private fun loadProductImage(product: Product) {
-            if (product.images != null && product.images.size > 0) {
-                val images = product.images
-                val primaryImage = images[0].src
-                Picasso.get().load(primaryImage).into(itemView.imageView_photo)
-            }
+
+           if (product.getFeatureImage().isNotEmpty()){
+               Picasso.get().load(product.getFeatureImage()).into(itemView.imageView_photo)
+           }
         }
     }
 }

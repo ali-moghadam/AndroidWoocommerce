@@ -3,7 +3,7 @@ package com.alirnp.androidwoocommerceapp.core.woocomere
 import com.alirnp.androidwoocommerceapp.core.constant.ApiVersion
 import com.alirnp.androidwoocommerceapp.repository.ProductRepository
 
-class Woocommerce(siteUrl: String, apiVerion: ApiVersion, consumerKey: String, consumerSecret: String) {
+class Woocommerce(siteUrl: String, apiVersion: ApiVersion, consumerKey: String, consumerSecret: String) {
     companion object {
         val API_V1 = ApiVersion.API_VERSION1
         val API_V2 = ApiVersion.API_VERSION2
@@ -15,7 +15,7 @@ class Woocommerce(siteUrl: String, apiVerion: ApiVersion, consumerKey: String, c
 
 
     init {
-        val baseUrl = "$siteUrl/wp-json/wc/v$apiVerion/"
+        val baseUrl = "$siteUrl/wp-json/wc/v$apiVersion/"
         val cartBaseUrl = "$siteUrl/wp-json/cocart/v1/"
 
         productRepository = ProductRepository(baseUrl, consumerKey, consumerSecret)
@@ -23,7 +23,7 @@ class Woocommerce(siteUrl: String, apiVerion: ApiVersion, consumerKey: String, c
     }
 
 
-    fun ProductRepository(): ProductRepository {
+    fun productRepository(): ProductRepository {
         return productRepository
     }
 
@@ -40,8 +40,8 @@ class Woocommerce(siteUrl: String, apiVerion: ApiVersion, consumerKey: String, c
             return this
         }
 
-        fun setApiVersion(apiVerion: ApiVersion): Builder {
-            this.apiVersion = apiVerion
+        fun setApiVersion(amiVersion: ApiVersion): Builder {
+            this.apiVersion = amiVersion
             return this
         }
 

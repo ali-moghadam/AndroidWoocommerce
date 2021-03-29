@@ -9,7 +9,6 @@ import java.util.ArrayList
 
 interface ProductAPI {
 
-
     @get:GET("products")
     val products: Call<ArrayList<Product>>
 

@@ -3,7 +3,6 @@ package com.alirnp.androidwoocommerceapp.test
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
@@ -14,7 +13,6 @@ import retrofit2.Response
 
 class TestActivity : AppCompatActivity() {
 
-    private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: ProductAdapter
 
     private val TAG = "LOG_ME"
@@ -25,7 +23,7 @@ class TestActivity : AppCompatActivity() {
 
         recyclerView.showShimmerAdapter()
 
-        WoocommerceApi.instance.ProductRepository().products()
+        WoocommerceApi.instance.productRepository().products()
             .enqueue(object : Callback<List<Product>> {
                 override fun onResponse(
                     call: retrofit2.Call<List<Product>>, response: Response<List<Product>>
@@ -33,12 +31,9 @@ class TestActivity : AppCompatActivity() {
                     Log.i(TAG, "onResponse: ${response.code()}")
 
                     if (response.code() == 200) {
-                        val items = response.body()
-
-                        if (items != null){
-                            declareRecyclerView(items)
+                       response.body()?.let {
+                            declareRecyclerView(it)
                         }
-
                     }
                 }
 
@@ -49,8 +44,6 @@ class TestActivity : AppCompatActivity() {
                 private fun declareRecyclerView(items: List<Product>) {
                         adapter = ProductAdapter(items)
                         recyclerView.adapter = adapter
-
-
                 }
 
             })

@@ -14,7 +14,6 @@
         app:shimmer_demo_child_count="10"
         app:shimmer_demo_grid_child_count="2"
         tools:listitem="@layout/item_product"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:shimmer_demo_layout="@layout/layout_demo"
         app:shimmer_demo_angle="20"
         />

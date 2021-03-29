@@ -10,11 +10,7 @@ import java.util.HashMap
 class ProductRepository(baseUrl: String, consumerKey: String, consumerSecret: String) :
     WooRepository(baseUrl, consumerKey, consumerSecret) {
 
-    private val apiService: ProductAPI
-
-    init {
-        apiService = retrofit.create(ProductAPI::class.java)
-    }
+    private val apiService: ProductAPI = retrofit.create(ProductAPI::class.java)
 
     fun create(product: Product): Call<Product> {
         return apiService.create(product)
