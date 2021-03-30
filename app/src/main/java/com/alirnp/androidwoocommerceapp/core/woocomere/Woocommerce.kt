@@ -1,13 +1,15 @@
 package com.alirnp.androidwoocommerceapp.core.woocomere
 
+import android.content.Context
 import com.alirnp.androidwoocommerceapp.core.constant.ApiVersion
 import com.alirnp.androidwoocommerceapp.repository.ProductRepository
+import com.alirnp.androidwoocommerceapp.repository.roomDB.AppDatabase
+import com.alirnp.androidwoocommerceapp.repository.roomDB.dao.ProductDao
 
 class Woocommerce(siteUrl: String, apiVersion: ApiVersion, consumerKey: String, consumerSecret: String) {
     companion object {
         val API_V3 = ApiVersion.API_VERSION3
     }
-
 
     private val productRepository: ProductRepository
 
@@ -15,6 +17,7 @@ class Woocommerce(siteUrl: String, apiVersion: ApiVersion, consumerKey: String, 
     init {
         val baseUrl = "$siteUrl/wp-json/wc/v$apiVersion/"
         val cartBaseUrl = "$siteUrl/wp-json/cocart/v1/"
+
 
         productRepository = ProductRepository(baseUrl, consumerKey, consumerSecret)
 

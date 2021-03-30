@@ -1,8 +1,13 @@
 package com.alirnp.androidwoocommerceapp.repository.api
 
 
+import androidx.lifecycle.LiveData
 import com.alirnp.androidwoocommerceapp.model.Product
+import com.alirnp.androidwoocommerceapp.repository.ApiResponse
+import io.reactivex.Flowable
+import io.reactivex.Single
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 import java.util.ArrayList
@@ -36,7 +41,7 @@ interface ProductAPI {
     fun view(@Path("id") id: Int): Call<Product>
 
     @GET("products")
-    fun list(): Call<List<Product>>
+    fun list(): LiveData<ApiResponse<List<Product>>>
 
     @Headers("Content-Type: application/json")
     @PUT("products/{id}")

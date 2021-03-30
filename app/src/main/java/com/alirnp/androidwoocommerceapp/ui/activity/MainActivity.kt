@@ -2,21 +2,19 @@ package com.alirnp.androidwoocommerceapp.ui.activity
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.databinding.ActivityMainBinding
 import com.alirnp.androidwoocommerceapp.model.Product
+import com.alirnp.androidwoocommerceapp.repository.AppExecutors
+import com.alirnp.androidwoocommerceapp.repository.Resource
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.repository.roomDB.AppDatabase
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_test.*
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,19 +32,6 @@ class MainActivity : AppCompatActivity() {
         initRecyclerView()
         getProducts()
 
-        AppDatabase.getInstance(this@MainActivity).productDao()
-            .getAll()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                for (product in it) {
-                    Log.i(TAG, "onCreate: ${product.name}")
-                }
-            }, {
-                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                Log.i(TAG, "onCreate: ${it.message}")
-            })
-
     }
 
     private fun initRecyclerView() {
@@ -56,45 +41,38 @@ class MainActivity : AppCompatActivity() {
 
     private fun getProducts() {
 
-        productRepository.products()
-            .enqueue(object : Callback<List<Product>> {
-                override fun onResponse(
-                    call: retrofit2.Call<List<Product>>,
-                    response: Response<List<Product>>
-                ) {
-                    onResponseProducts(response)
-                }
-
-                override fun onFailure(call: retrofit2.Call<List<Product>>, t: Throwable) {
-                    onFailureProducts(t)
-                }
-            })
-
-    }
-
-    private fun onFailureProducts(t: Throwable) {
-        Log.i(TAG, "onFailure: ${t.message}")
-    }
-
-    private fun onResponseProducts(response: Response<List<Product>>) {
-        Log.i(TAG, "onResponse: ${response.code()}")
-
-        if (response.isSuccessful) {
-            response.body()?.let { productList ->
-                declareRecyclerView(productList)
-
-                AppDatabase.getInstance(this@MainActivity).productDao()
-                    .insertAll(productList)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        Toast.makeText(this, "OK", Toast.LENGTH_LONG).show()
-                    }, {
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                        Log.i(TAG, "onCreate: ${it.message}")
-                    })
+        // Create the observer which updates the UI.
+        val nameObserver = Observer<Resource<List<Product>>> { newName ->
+            // Update the UI, in this case, a TextView.
+            when(newName){
+                is Resource.Loading -> Log.i(TAG, "getProducts: Loading")
+                is Resource.Success -> onResponseProducts(newName.data)
+                is Resource.Error -> onFailureProducts(newName.message)
             }
+
         }
+
+            productRepository.getProducts(
+                this ,
+                AppDatabase.getInstance(this).productDao(),
+                AppExecutors())
+            .observe(this ,nameObserver )
+
+
+    }
+
+
+
+    private fun onFailureProducts(t: String?) {
+        Log.i(TAG, "onFailure: $t?")
+    }
+
+    private fun onResponseProducts(response: List<Product>?) {
+        Log.i(TAG, "onResponseProducts: ${response?.size}")
+            response?.let { productList ->
+                declareRecyclerView(productList)
+            }
+
     }
 
     private fun declareRecyclerView(items: List<Product>) {

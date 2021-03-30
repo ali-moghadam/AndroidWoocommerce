@@ -23,7 +23,7 @@ class TestActivity : AppCompatActivity() {
 
         recyclerView.showShimmerAdapter()
 
-        WoocommerceApi.instance.productRepository().products()
+       /* WoocommerceApi.instance.productRepository().products()
             .enqueue(object : Callback<List<Product>> {
                 override fun onResponse(
                     call: retrofit2.Call<List<Product>>, response: Response<List<Product>>
@@ -46,6 +46,6 @@ class TestActivity : AppCompatActivity() {
                         recyclerView.adapter = adapter
                 }
 
-            })
+            })*/
     }
 }

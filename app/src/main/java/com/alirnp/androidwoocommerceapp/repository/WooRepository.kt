@@ -17,7 +17,7 @@ open class WooRepository(baseUrl: String, consumerKey: String, consumerSecret: S
 
     init {
         val loggingInterceptor = HttpLoggingInterceptor { logger -> Log.i(TAG, "retrofit log: $logger") }
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val gson = GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
@@ -35,6 +35,7 @@ open class WooRepository(baseUrl: String, consumerKey: String, consumerSecret: S
         retrofit = Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
                 .client(client)
                 .build()
     }

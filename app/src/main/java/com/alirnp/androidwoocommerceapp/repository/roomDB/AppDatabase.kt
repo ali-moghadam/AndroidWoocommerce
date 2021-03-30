@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.*
 import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.roomDB.converter.ProductConverter
+import com.alirnp.androidwoocommerceapp.repository.roomDB.dao.ProductDao
 
 @Database(entities = arrayOf(Product::class), version = 8)
 @TypeConverters(ProductConverter::class)
