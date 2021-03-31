@@ -1,17 +1,12 @@
 package com.alirnp.androidwoocommerceapp.repository
 
 import android.app.Application
-import android.content.Context
-import android.os.Build
-import android.util.Log
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LiveData
 import com.alirnp.androidwoocommerceapp.core.helper.NetworkHelper
 import com.alirnp.androidwoocommerceapp.core.helper.filter.ProductFilter
 import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.api.ProductAPI
 import com.alirnp.androidwoocommerceapp.repository.roomDB.AppDatabase
-import com.alirnp.androidwoocommerceapp.repository.roomDB.dao.ProductDao
 import retrofit2.Call
 import java.util.*
 
@@ -36,9 +31,23 @@ class ProductRepository(application: Application, baseUrl: String, consumerKey: 
 
             override fun loadFromDb() = productDao.getAll()
 
-            override fun createCall() = productAPI.list()
+            override fun createCall() = productAPI.getAllProducts()
         }.asLiveData()
     }
+
+    fun products(page: Int, per_page: Int): Call<List<Product>> {
+        val productFilter = ProductFilter()
+        productFilter.page = page
+        productFilter.per_page = per_page
+
+        return filter(productFilter.filters)
+    }
+
+    fun filter(filters: Map<String, String>): Call<List<Product>> {
+        return productAPI.filter(filters)
+    }
+
+
 
     fun create(product: Product): Call<Product> {
         return productAPI.create(product)
@@ -49,10 +58,6 @@ class ProductRepository(application: Application, baseUrl: String, consumerKey: 
         return productAPI.view(id)
     }
 
-    fun filter(filters: Map<String, String>): Call<List<Product>> {
-        return productAPI.filter(filters)
-    }
-
     fun products(productFilter: ProductFilter): Call<List<Product>> {
         return filter(productFilter.filters)
     }
@@ -60,14 +65,6 @@ class ProductRepository(application: Application, baseUrl: String, consumerKey: 
     fun search(term: String): Call<List<Product>> {
         val productFilter = ProductFilter()
         productFilter.search = term
-
-        return filter(productFilter.filters)
-    }
-
-    fun products(page: Int, per_page: Int): Call<List<Product>> {
-        val productFilter = ProductFilter()
-        productFilter.page = page
-        productFilter.per_page = per_page
 
         return filter(productFilter.filters)
     }

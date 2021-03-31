@@ -28,19 +28,12 @@ class MainActivity : AppCompatActivity() {
 
         initSwipeRefreshLayout()
         initRecyclerView()
-        getProducts()
 
+        getProducts()
     }
 
-    /*
-* Sets up a SwipeRefreshLayout.OnRefreshListener that is invoked when the user
-* performs a swipe-to-refresh gesture.
-*/
     private fun initSwipeRefreshLayout() {
-
         binding.swipeRefreshLayout.setOnRefreshListener {
-            // This method performs the actual data-refresh operation.
-            // The method calls setRefreshing(false) when it's finished.
             getProducts()
         }
     }

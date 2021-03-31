@@ -14,6 +14,9 @@ import java.util.ArrayList
 
 interface ProductAPI {
 
+    @GET("products")
+    fun getAllProducts(): LiveData<ApiResponse<List<Product>>>
+
     @get:GET("products")
     val products: Call<ArrayList<Product>>
 
@@ -39,9 +42,6 @@ interface ProductAPI {
 
     @GET("products/{id}")
     fun view(@Path("id") id: Int): Call<Product>
-
-    @GET("products")
-    fun list(): LiveData<ApiResponse<List<Product>>>
 
     @Headers("Content-Type: application/json")
     @PUT("products/{id}")
