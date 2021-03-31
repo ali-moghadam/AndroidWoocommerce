@@ -7,23 +7,28 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.MainActivity">
 
-
-        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-            android:id="@+id/recyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:shimmer_demo_child_count="10"
-            app:shimmer_demo_grid_child_count="2"
-            tools:listitem="@layout/item_product"
-            app:spanCount="2"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:shimmer_demo_layout="@layout/layout_demo"
-            app:shimmer_demo_angle="20"
-            />
+            android:layout_height="match_parent">
 
+            <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:shimmer_demo_child_count="10"
+                app:shimmer_demo_grid_child_count="2"
+                tools:listitem="@layout/item_product"
+                app:spanCount="2"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:shimmer_demo_layout="@layout/layout_demo"
+                app:shimmer_demo_angle="20"
+                />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

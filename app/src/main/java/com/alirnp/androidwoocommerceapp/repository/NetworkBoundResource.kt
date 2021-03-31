@@ -26,7 +26,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
         val dbSource = loadFromDb()
         result.addSource(dbSource) { data ->
             result.removeSource(dbSource)
-            setValue(Resource.Success(data))
+            setValue(Resource.Success(data,false))
             if (shouldFetch(data)) {
                 fetchFromNetwork(dbSource)
             }
@@ -58,7 +58,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                             // otherwise we will get immediately last cached value,
                             // which may not be updated with latest results received from network.
                             result.addSource(loadFromDb()) { newData ->
-                                setValue(Resource.Success(newData))
+                                setValue(Resource.Success(newData,true))
                             }
                         }
                     }
@@ -67,14 +67,14 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                     appExecutors.mainThread().execute {
                         // reload from disk whatever we had
                         result.addSource(loadFromDb()) { newData ->
-                            setValue(Resource.Success(newData))
+                            setValue(Resource.Success(newData,true))
                         }
                     }
                 }
                 is ApiErrorResponse -> {
                     onFetchFailed()
                     result.addSource(dbSource) { newData ->
-                        setValue(Resource.Error(response.errorMessage, newData))
+                        setValue(Resource.Error(response.errorMessage, newData,true))
                     }
                 }
             }

@@ -57,7 +57,6 @@ class Woocommerce(
             return this
         }
 
-
         fun build(): Woocommerce {
             return Woocommerce(application, siteUrl, apiVersion, consumerKey, consumerSecret)
         }

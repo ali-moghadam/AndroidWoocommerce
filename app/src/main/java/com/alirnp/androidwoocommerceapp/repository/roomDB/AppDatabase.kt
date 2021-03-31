@@ -6,7 +6,7 @@ import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.roomDB.converter.ProductConverter
 import com.alirnp.androidwoocommerceapp.repository.roomDB.dao.ProductDao
 
-@Database(entities = arrayOf(Product::class), version = 10)
+@Database(entities = arrayOf(Product::class), version = 12)
 @TypeConverters(ProductConverter::class)
 
 abstract class AppDatabase : RoomDatabase() {

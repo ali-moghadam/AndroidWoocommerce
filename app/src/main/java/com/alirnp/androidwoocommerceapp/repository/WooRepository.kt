@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 open class WooRepository(
@@ -17,14 +18,12 @@ open class WooRepository(
     consumerSecret: String
 ) {
 
-    private val TAG = "LOG_ME"
-
     //TODO ('Apply DI or single instance on this')
     var retrofit: Retrofit
 
     init {
         val loggingInterceptor =
-            HttpLoggingInterceptor { logger -> Log.i(TAG, "retrofit log: $logger") }
+            HttpLoggingInterceptor { logger -> Timber.i("retrofit -> $logger") }
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val gson = GsonBuilder()
@@ -47,6 +46,5 @@ open class WooRepository(
             .client(client)
             .build()
     }
-
 
 }

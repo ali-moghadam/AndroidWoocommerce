@@ -25,6 +25,8 @@ class Product : Serializable {
     lateinit var price: String
     lateinit var regular_price: String
     lateinit var sale_price: String
+    var date_created: String? = ""
+    var date_modified: String? = ""
     lateinit var date_on_sale_from: Date
     lateinit var date_on_sale_from_gmt: Date
     lateinit var date_on_sale_to: Date

@@ -21,16 +21,6 @@ class ProductRepository(application: Application, baseUrl: String, consumerKey: 
 
     private val productAPI: ProductAPI = retrofit.create(ProductAPI::class.java)
 
-
-    fun create(product: Product): Call<Product> {
-        return productAPI.create(product)
-    }
-
-
-    fun product(id: Int): Call<Product> {
-        return productAPI.view(id)
-    }
-
     /**
      * get list of product
      */
@@ -48,6 +38,15 @@ class ProductRepository(application: Application, baseUrl: String, consumerKey: 
 
             override fun createCall() = productAPI.list()
         }.asLiveData()
+    }
+
+    fun create(product: Product): Call<Product> {
+        return productAPI.create(product)
+    }
+
+
+    fun product(id: Int): Call<Product> {
+        return productAPI.view(id)
     }
 
     fun filter(filters: Map<String, String>): Call<List<Product>> {
@@ -95,6 +94,4 @@ class ProductRepository(application: Application, baseUrl: String, consumerKey: 
     fun products(filters: HashMap<String, String>): Call<List<Product>> {
         return productAPI.filter(filters)
     }
-
-
 }
