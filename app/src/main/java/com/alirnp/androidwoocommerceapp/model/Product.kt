@@ -2,6 +2,7 @@ package com.alirnp.androidwoocommerceapp.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.*
@@ -29,7 +30,7 @@ class Product : Serializable {
     lateinit var date_on_sale_to: Date
     lateinit var date_on_sale_to_gmt: Date
     lateinit var price_html: String
-    var isOn_sale: Boolean = false
+    var on_sale: Boolean = false
     var isPurchasable: Boolean = false
     var total_sales: Int = 0
     var isVirtual: Boolean = false
@@ -79,6 +80,7 @@ class Product : Serializable {
     lateinit var images: List<Image>
 
     fun getFeatureImage(): String {
+
         if (this.images.isEmpty()) {
             return ""
         }

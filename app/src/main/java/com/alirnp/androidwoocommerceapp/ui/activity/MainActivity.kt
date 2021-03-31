@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alirnp.androidwoocommerceapp.R
+import com.alirnp.androidwoocommerceapp.core.helper.ProductHelper
 import com.alirnp.androidwoocommerceapp.databinding.ActivityMainBinding
 import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.AppExecutors
@@ -15,6 +16,7 @@ import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.repository.roomDB.AppDatabase
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
 import kotlinx.android.synthetic.main.activity_test.*
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,23 +46,16 @@ class MainActivity : AppCompatActivity() {
         // Create the observer which updates the UI.
         val nameObserver = Observer<Resource<List<Product>>> { newName ->
             // Update the UI, in this case, a TextView.
-            when(newName){
-                is Resource.Loading -> Log.i(TAG, "getProducts: Loading")
+            when (newName) {
+                is Resource.Loading -> Timber.i("getProducts: Loading")
                 is Resource.Success -> onResponseProducts(newName.data)
                 is Resource.Error -> onFailureProducts(newName.message)
             }
 
         }
 
-            productRepository.getProducts(
-                this ,
-                AppDatabase.getInstance(this).productDao(),
-                AppExecutors())
-            .observe(this ,nameObserver )
-
-
+        productRepository.getProducts().observe(this, nameObserver)
     }
-
 
 
     private fun onFailureProducts(t: String?) {
@@ -69,9 +64,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun onResponseProducts(response: List<Product>?) {
         Log.i(TAG, "onResponseProducts: ${response?.size}")
-            response?.let { productList ->
-                declareRecyclerView(productList)
-            }
+
+        response?.filter { it.status == ProductHelper.Status.Publish.status}?.let { productList ->
+            declareRecyclerView(productList)
+        }
 
     }
 

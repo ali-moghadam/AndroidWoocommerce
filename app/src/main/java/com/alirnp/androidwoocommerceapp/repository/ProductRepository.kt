@@ -1,22 +1,23 @@
 package com.alirnp.androidwoocommerceapp.repository
 
+import android.app.Application
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LiveData
+import com.alirnp.androidwoocommerceapp.core.helper.NetworkHelper
 import com.alirnp.androidwoocommerceapp.core.helper.filter.ProductFilter
 import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.api.ProductAPI
+import com.alirnp.androidwoocommerceapp.repository.roomDB.AppDatabase
 import com.alirnp.androidwoocommerceapp.repository.roomDB.dao.ProductDao
 import retrofit2.Call
 import java.util.*
 
 
-class ProductRepository(baseUrl: String, consumerKey: String, consumerSecret: String) :
-    WooRepository(baseUrl, consumerKey, consumerSecret) {
+class ProductRepository(application: Application, baseUrl: String, consumerKey: String, consumerSecret: String) :
+    WooRepository(application , baseUrl, consumerKey, consumerSecret) {
 
     private val productAPI: ProductAPI = retrofit.create(ProductAPI::class.java)
 
@@ -30,49 +31,23 @@ class ProductRepository(baseUrl: String, consumerKey: String, consumerSecret: St
         return productAPI.view(id)
     }
 
-/*    fun products(): Call<List<Product>> {
-        return productAPI.list()
-    }*/
+    /**
+     * get list of product
+     */
+    fun getProducts(): LiveData<Resource<List<Product>>> {
+        val productDao = AppDatabase.getInstance(application).productDao()
 
-    fun getProducts(context: Context? , productDao: ProductDao, appExecutors: AppExecutors): LiveData<Resource<List<Product>>> {
-        return object : NetworkBoundResource<List<Product>, List<Product>>(appExecutors) {
-            override fun saveCallResult(items: List<Product>) {
-                productDao.insertAll(items)
+        return object : NetworkBoundResource<List<Product>, List<Product>>(AppExecutors()) {
+            override fun saveCallResult(item: List<Product>) {
+                productDao.insertAll(item)
             }
 
-            override fun shouldFetch(data: List<Product>?) = isNetworkAvailable(context)
+            override fun shouldFetch(data: List<Product>?) = NetworkHelper.isNetworkAvailable(application)
 
             override fun loadFromDb() = productDao.getAll()
 
             override fun createCall() = productAPI.list()
         }.asLiveData()
-    }
-
-    fun isNetworkAvailable(context: Context?): Boolean {
-        if (context == null) return false
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            if (capabilities != null) {
-                when {
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                        return true
-                    }
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-                        return true
-                    }
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
-                        return true
-                    }
-                }
-            }
-        } else {
-            val activeNetworkInfo = connectivityManager.activeNetworkInfo
-            if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
-                return true
-            }
-        }
-        return false
     }
 
     fun filter(filters: Map<String, String>): Call<List<Product>> {
