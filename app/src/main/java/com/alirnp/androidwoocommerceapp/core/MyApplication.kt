@@ -1,15 +1,15 @@
 package com.alirnp.androidwoocommerceapp.core
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.util.Log
 import androidx.annotation.NonNull
+import androidx.multidex.MultiDexApplication
 import com.alirnp.androidwoocommerceapp.BuildConfig
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import timber.log.Timber
 
 
-class MyApplication : Application() {
+class MyApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()

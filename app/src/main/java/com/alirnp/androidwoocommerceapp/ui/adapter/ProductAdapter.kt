@@ -7,9 +7,9 @@ import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.alirnp.androidwoocommerceapp.R
+import com.alirnp.androidwoocommerceapp.model.Product
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_product.view.*
-import com.alirnp.androidwoocommerceapp.model.Product
 
 class ProductAdapter(private val items: List<Product>) :
     RecyclerView.Adapter<ProductAdapter.Holder>() {
@@ -30,16 +30,14 @@ class ProductAdapter(private val items: List<Product>) :
 
     override fun getItemCount() = items.size
 
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-    }
-
 
     class Holder(items: List<Product>, v: View) : RecyclerView.ViewHolder(v) {
 
         init {
             itemView.setOnClickListener {
                 Toast.makeText(v.context, items[adapterPosition].name, Toast.LENGTH_SHORT).show()
+                //  Toast.makeText(v.context, "I love my wife, her name is raana", Toast.LENGTH_SHORT).show()
+
             }
         }
 
