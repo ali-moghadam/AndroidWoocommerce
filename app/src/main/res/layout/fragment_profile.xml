@@ -1,14 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.ProfileFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-
-    <TextView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coord_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Profile" />
+        tools:context=".activity.ChannelHubOld">
 
-</FrameLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/gray_background"
+                    android:fitsSystemWindows="true"
+                    tools:context=".ui.fragment.ProfileFragment">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.05" />
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageView_userImage"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:elevation="@dimen/_5sdp"
+                        android:translationZ="@dimen/_10sdp"
+                        android:visibility="visible"
+                        app:elevation="@dimen/_4sdp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/guideline_1"
+                        app:srcCompat="@drawable/placeholder_image" />
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageView_selectImage"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/shape_circle_color_primary_transparent"
+                        android:padding="@dimen/_6sdp"
+                        android:translationZ="@dimen/_20sdp"
+                        app:elevation="@dimen/_4sdp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView_userImage"
+                        app:layout_constraintRight_toRightOf="@+id/imageView_userImage"
+                        app:rippleColor="@color/colorPrimary"
+                        app:srcCompat="@drawable/ic_photo_camera"
+                        app:tint="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/textView_userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:text="Ali Moghadam"
+                        android:textSize="23sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView_userImage" />
+
+                    <TextView
+                        android:id="@+id/textView_userEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:alpha="0.9"
+                        android:text="ali.moghadam.developer@gmail.com"
+                        android:textSize="17sp"
+                        android:textStyle="italic"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_userName" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/_25sdp"
+                        android:background="@drawable/shape_background_top_cerve"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_userEmail">
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/my_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:background="@drawable/shape_background_top_cerve"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_userEmail">
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_background_top_cerve"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                />
+
+        </FrameLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray_background"
+            tools:context=".ui.fragment.ProfileFragment">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.05" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageView_userImage"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:elevation="@dimen/_5sdp"
+                android:translationZ="@dimen/_10sdp"
+                android:visibility="visible"
+                app:elevation="@dimen/_4sdp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guideline_1"
+                app:srcCompat="@drawable/placeholder_image" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageView_selectImage"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:background="@drawable/shape_circle_color_primary_transparent"
+                android:padding="@dimen/_6sdp"
+                android:translationZ="@dimen/_20sdp"
+                app:elevation="@dimen/_4sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView_userImage"
+                app:layout_constraintRight_toRightOf="@+id/imageView_userImage"
+                app:rippleColor="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_photo_camera"
+                app:tint="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/textView_userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/imageView_userImage"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:textSize="23sp"
+                app:layout_constraintRight_toRightOf="parent"
+                android:text="Ali Moghadam"
+                />
+
+            <TextView
+                android:id="@+id/textView_userEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/textView_userName"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textSize="17sp"
+                android:alpha="0.9"
+                android:textStyle="italic"
+                app:layout_constraintRight_toRightOf="parent"
+                android:text="ali.moghadam.developer@gmail.com"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/shape_background_top_cerve"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/_25sdp"
+                app:layout_constraintTop_toBottomOf="@+id/textView_userEmail">
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
+</layout>

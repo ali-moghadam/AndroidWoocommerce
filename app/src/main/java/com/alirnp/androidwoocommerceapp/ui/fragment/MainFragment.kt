@@ -16,7 +16,6 @@ import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.Resource
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
-import kotlinx.android.synthetic.main.activity_test.*
 import timber.log.Timber
 
 class MainFragment : Fragment() {
@@ -108,6 +107,6 @@ class MainFragment : Fragment() {
 
     private fun declareRecyclerView(items: List<Product>) {
         adapter = ProductAdapter(items)
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
     }
 }

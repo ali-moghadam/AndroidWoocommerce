@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2196F3</color>
+    <!--  Primary  -->
+    <color name="colorPrimary">#1a8dff</color>
+    <color name="colorPrimaryDark">#0e78e0</color>
+    <color name="colorAccent">#1a8dff</color>
+
+    <!--  Basic  -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#f44336</color>
+    <color name="purple">#673AB7</color>
+    <color name="orange">#FF9900</color>
+
+    <!--  Default  -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!--  Other  -->
+    <color name="green_blue">#75afa4</color>
     <color name="gray">#CFD8DC</color>
+    <color name="gray_background">#f0f5f5</color>
+
+    <!--  Transparent  -->
+    <color name="color_primary_transparent">#1A1a8dff</color>
 </resources>
