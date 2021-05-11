@@ -36,16 +36,26 @@
         android:name="com.alirnp.androidwoocommerceapp.ui.fragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
+
         <action
-            android:id="@+id/action_profileFragment_to_registerFragment"
-            app:destination="@id/registerFragment"
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
             app:launchSingleTop="true"
-            app:popUpTo="@+id/basketFragment"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@+id/mainFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.alirnp.androidwoocommerceapp.ui.fragment.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.alirnp.androidwoocommerceapp.ui.fragment.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
 </navigation>

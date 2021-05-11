@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.core.helper.ProductHelper
@@ -18,6 +21,7 @@ import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.Resource
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
+import com.alirnp.androidwoocommerceapp.viewModel.UserViewModel
 import timber.log.Timber
 
 class ProfileFragment : Fragment() {
@@ -27,9 +31,30 @@ class ProfileFragment : Fragment() {
     lateinit var navController: NavController
     private val productRepository = WoocommerceApi.instance.productRepository()
 
+    private val userViewModel: UserViewModel by activityViewModels()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val navController = findNavController()
+
+        val currentBackStackEntry = navController.currentBackStackEntry!!
+        val savedStateHandle = currentBackStackEntry.savedStateHandle
+        savedStateHandle.getLiveData<Boolean>(LoginFragment.LOGIN_SUCCESSFUL)
+            .observe(currentBackStackEntry, { success ->
+                if (!success) {
+                    val startDestination = navController.graph.startDestination
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(startDestination, true)
+                        .build()
+                    navController.navigate(startDestination, null, navOptions)
+                }
+            })
     }
 
     override fun onCreateView(
@@ -43,15 +68,32 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
+        navController = findNavController()
 
-        //  showDefaultImage()
+        observeUser()
+
 
 
         binding.recyclerView.layoutManager = GridLayoutManager(mContext, 2)
 
-        getProducts()
+        //  showDefaultImage()
 
+        getProducts()
+    }
+
+    private fun observeUser() {
+
+        userViewModel.user.observe(viewLifecycleOwner, { user ->
+            if (user != null) {
+                showWelcomeMessage()
+            } else {
+                navController.navigate(R.id.loginFragment)
+            }
+        })
+    }
+
+    private fun showWelcomeMessage() {
+        Toast.makeText(context, "Welcome Message", Toast.LENGTH_SHORT).show()
     }
 
     // Create the observer which updates the UI.

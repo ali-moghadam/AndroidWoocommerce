@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -20,20 +20,24 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        initBottomNavigation()
+        //  initBottomNavigation()
         setUpNavigation()
 
     }
 
     private fun setUpNavigation() {
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.mainFragment) as NavHostFragment?
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener {
 
-        NavigationUI.setupWithNavController(
-            binding.bottomNavigationView,
-            navHostFragment!!.navController
-        )
+            onNavDestinationSelected(it, Navigation.findNavController(this, R.id.mainFragment))
+
+/*            if (it.itemId == R.id.profileFragment) {
+
+                //  navHostFragment?.navController?.navigate(R.id.action_profileFragment_to_registerFragment)
+
+            }*/
+            return@setOnNavigationItemSelectedListener true
+        }
     }
 
 
