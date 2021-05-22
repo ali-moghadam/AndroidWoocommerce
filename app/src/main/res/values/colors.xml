@@ -23,7 +23,9 @@
     <!--  Other  -->
     <color name="green_blue">#75afa4</color>
     <color name="gray">#CFD8DC</color>
+    <color name="gray_light">#f5f5f5</color>
     <color name="gray_background">#f0f5f5</color>
+    <color name="inactive">#81858e</color>
 
     <!--  Transparent  -->
     <color name="color_primary_transparent">#1A1a8dff</color>

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import com.alirnp.androidwoocommerceapp.R
@@ -42,8 +41,8 @@ class LoginFragment : Fragment() {
         Timer().schedule(timerTask {
             run {
                 activity?.runOnUiThread {
-                    login("username", "PASS")
-                    userViewModel.user.postValue(User("username"))
+                    //  login("username", "PASS")
+
                 }
             }
         }, 5000)
@@ -51,8 +50,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(username: String, password: String) {
-        userViewModel.login(username, password).observe(viewLifecycleOwner, Observer { result ->
+        userViewModel.login(username, password).observe(viewLifecycleOwner, { result ->
             if (result == true) {
+                userViewModel.user.postValue(User("username"))
+
                 savedStateHandle.set(LOGIN_SUCCESSFUL, true)
                 findNavController().popBackStack()
             } else {
