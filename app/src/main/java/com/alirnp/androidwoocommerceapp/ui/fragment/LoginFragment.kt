@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import com.alirnp.androidwoocommerceapp.R
-import com.alirnp.androidwoocommerceapp.model.User
+import com.alirnp.androidwoocommerceapp.databinding.FragmentLoginBinding
 import com.alirnp.androidwoocommerceapp.viewModel.UserViewModel
-import java.util.*
-import kotlin.concurrent.timerTask
 
 /**
  * A simple [Fragment] subclass.
@@ -21,6 +21,7 @@ import kotlin.concurrent.timerTask
  */
 class LoginFragment : Fragment() {
 
+    private lateinit var binding: FragmentLoginBinding
     private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var savedStateHandle: SavedStateHandle
 
@@ -29,7 +30,8 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,32 +39,62 @@ class LoginFragment : Fragment() {
         savedStateHandle = findNavController().previousBackStackEntry!!.savedStateHandle
         savedStateHandle.set(LOGIN_SUCCESSFUL, false)
 
-
-        Timer().schedule(timerTask {
-            run {
-                activity?.runOnUiThread {
-                    //  login("username", "PASS")
-
-                }
+        binding.materialButton.setOnClickListener {
+            activity?.runOnUiThread {
+                login(
+                    binding.textInputLayoutUsername.editText?.text.toString(),
+                    binding.textInputLayoutPassword.editText?.text.toString()
+                )
             }
-        }, 5000)
+        }
 
     }
 
     private fun login(username: String, password: String) {
-        userViewModel.login(username, password).observe(viewLifecycleOwner, { result ->
-            if (result == true) {
-                userViewModel.user.postValue(User("username"))
+/*        userViewModel.login(username, password).observe(requireActivity() as LifecycleOwner,
+            {
 
-                savedStateHandle.set(LOGIN_SUCCESSFUL, true)
-                findNavController().popBackStack()
-            } else {
-                showErrorMessage()
-            }
-        })
+                 //   Toast.makeText(context, "${response.isSuccessful}", Toast.LENGTH_SHORT).show()
+
+
+            })*/
+
+        val disposable = userViewModel.login(username, password)
+            .subscribe(
+                { Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show() },
+                { error -> Toast.makeText(context, "${error.message}", Toast.LENGTH_SHORT).show() }
+            )
+
+        /* userViewModel.login(username, password).enqueue(object : Callback<UserResponse> {
+             override fun onResponse(
+                 call: Call<UserResponse>,
+                 response: Response<UserResponse>
+             ) {
+                 if (response.isSuccessful) {
+                     val user = response.body()?.user
+
+                     userViewModel.user.postValue(user)
+
+                     savedStateHandle.set(LOGIN_SUCCESSFUL, true)
+                     findNavController().popBackStack()
+                 } else {
+                     showErrorMessage(Throwable(response.errorBody()?.string()))
+
+                    // showErrorMessage(Throwable(""))
+                     // TODO: 5/28/2021 you should implement that error response from server
+                 }
+             }
+
+             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                 showErrorMessage(t)
+             }
+
+         })*/
+
+
     }
 
-    fun showErrorMessage() {
+    fun showErrorMessage(t: Throwable) {
         // Display a snackbar error message
     }
 

@@ -6,13 +6,16 @@ import com.alirnp.androidwoocommerceapp.core.helper.NetworkHelper
 import com.alirnp.androidwoocommerceapp.core.helper.filter.ProductFilter
 import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.api.ProductAPI
+import com.alirnp.androidwoocommerceapp.repository.base.WooRepository
+import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.AppExecutors
+import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.NetworkBoundResource
 import com.alirnp.androidwoocommerceapp.repository.roomDB.AppDatabase
 import retrofit2.Call
 import java.util.*
 
 
-class ProductRepository(application: Application, baseUrl: String, consumerKey: String, consumerSecret: String) :
-    WooRepository(application , baseUrl, consumerKey, consumerSecret) {
+class ProductRepository(application: Application, baseUrl: String) :
+    WooRepository(application, baseUrl) {
 
     private val productAPI: ProductAPI = retrofit.create(ProductAPI::class.java)
 
@@ -43,7 +46,7 @@ class ProductRepository(application: Application, baseUrl: String, consumerKey: 
         return filter(productFilter.filters)
     }
 
-    fun filter(filters: Map<String, String>): Call<List<Product>> {
+    private fun filter(filters: Map<String, String>): Call<List<Product>> {
         return productAPI.filter(filters)
     }
 

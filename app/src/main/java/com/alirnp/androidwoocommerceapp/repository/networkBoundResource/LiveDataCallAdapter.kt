@@ -1,4 +1,4 @@
-package com.alirnp.androidwoocommerceapp.repository
+package com.alirnp.androidwoocommerceapp.repository.networkBoundResource
 
 import androidx.lifecycle.LiveData
 import retrofit2.Call

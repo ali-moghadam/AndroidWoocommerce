@@ -1,28 +1,28 @@
 package com.alirnp.androidwoocommerceapp.core.woocomere
 
 import android.app.Application
+import com.alirnp.androidwoocommerceapp.Config
 import com.alirnp.androidwoocommerceapp.core.constant.ApiVersion
 import com.alirnp.androidwoocommerceapp.repository.ProductRepository
+import com.alirnp.androidwoocommerceapp.repository.UserRepository
 
-class Woocommerce(
-    application: Application,
-    siteUrl: String,
-    apiVersion: ApiVersion,
-    consumerKey: String,
-    consumerSecret: String
-) {
+class Woocommerce(application: Application) {
     companion object {
-        val API_V3 = ApiVersion.API_VERSION3
+        private val apiVersion = ApiVersion.API_VERSION3
+        private const val siteUrl = Config.URL
     }
 
     private val productRepository: ProductRepository
-
+    private val userRepository: UserRepository
 
     init {
-        val baseUrl = "$siteUrl/wp-json/wc/v$apiVersion/"
+        val woocommerceApiUrl = "$siteUrl/wp-json/wc/v$apiVersion/"
+        val wordpressUserApiUrl = "$siteUrl/wp-json/custom-plugin/"
+
         val cartBaseUrl = "$siteUrl/wp-json/cocart/v1/"
 
-        productRepository = ProductRepository(application, baseUrl, consumerKey, consumerSecret)
+        productRepository = ProductRepository(application, woocommerceApiUrl)
+        userRepository = UserRepository(application, wordpressUserApiUrl)
 
     }
 
@@ -30,35 +30,7 @@ class Woocommerce(
         return productRepository
     }
 
-
-    class Builder(val application: Application) {
-        private lateinit var siteUrl: String
-        private lateinit var apiVersion: ApiVersion
-        private lateinit var consumerKey: String
-        private lateinit var consumerSecret: String
-
-        fun setSiteUrl(siteUrl: String): Builder {
-            this.siteUrl = siteUrl
-            return this
-        }
-
-        fun setApiVersion(amiVersion: ApiVersion): Builder {
-            this.apiVersion = amiVersion
-            return this
-        }
-
-        fun setConsumerKey(consumerKey: String): Builder {
-            this.consumerKey = consumerKey
-            return this
-        }
-
-        fun setConsumerSecret(consumerSecret: String): Builder {
-            this.consumerSecret = consumerSecret
-            return this
-        }
-
-        fun build(): Woocommerce {
-            return Woocommerce(application, siteUrl, apiVersion, consumerKey, consumerSecret)
-        }
+    fun userRepository(): UserRepository {
+        return userRepository
     }
 }
