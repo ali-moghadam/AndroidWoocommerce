@@ -51,14 +51,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(username: String, password: String) {
-/*        userViewModel.login(username, password).observe(requireActivity() as LifecycleOwner,
-            {
-
-                 //   Toast.makeText(context, "${response.isSuccessful}", Toast.LENGTH_SHORT).show()
-
-
-            })*/
-
         val disposable = userViewModel.login(username, password)
             .subscribe(
                 { Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show() },
