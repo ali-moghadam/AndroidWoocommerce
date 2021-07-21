@@ -70,6 +70,7 @@ class CategoryAdapter(private val items: List<Category>) :
                     .load(image.src)
                     .apply(RequestOptions().override(1000, 1000))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.woocommerce_placeholder)
                     .into(binding.imageViewPhoto)
             }
         }

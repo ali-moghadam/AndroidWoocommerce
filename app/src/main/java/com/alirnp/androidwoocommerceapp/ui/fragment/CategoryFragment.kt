@@ -1,12 +1,11 @@
 package com.alirnp.androidwoocommerceapp.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.transition.TransitionManager
 import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.core.decorator.GridSpacingItemDecoration
 import com.alirnp.androidwoocommerceapp.databinding.FragmentCategoryBinding
@@ -20,7 +19,8 @@ class CategoryFragment : Fragment() {
 
     private val categoryRepository = WoocommerceApi.instance.categoryRepository
     private lateinit var binding: FragmentCategoryBinding
-    private val spanCount = 2
+
+    private var defaultSpanCount = 2
 
 
     override fun onCreateView(
@@ -29,6 +29,7 @@ class CategoryFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentCategoryBinding.inflate(inflater)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -36,8 +37,15 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+        setupSweepRefreshLayout()
         observeCategories()
 
+    }
+
+    private fun setupSweepRefreshLayout() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     // Create the observer which updates the UI.
@@ -71,18 +79,22 @@ class CategoryFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        binding.recyclerView.showShimmerAdapter()
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
+        binding.recyclerView.apply {
+            val space = context.resources.getDimension(R.dimen._10sdp).toInt()
+            val itemDecoration = GridSpacingItemDecoration(defaultSpanCount, space, true, 0)
+
+            addItemDecoration(itemDecoration)
+            showShimmerAdapter()
+            layoutManager = GridLayoutManager(requireContext(), defaultSpanCount)
+        }
     }
 
     private fun declareRecyclerView(items: List<Category>) {
+        binding.recyclerView.adapter = CategoryAdapter(items)
+    }
 
-        val space = requireContext().resources.getDimension(R.dimen._10sdp).toInt()
-        val itemDecoration = GridSpacingItemDecoration(spanCount, space, true, 0)
-
-        binding.recyclerView.apply {
-            addItemDecoration(itemDecoration)
-            adapter = CategoryAdapter(items)
-        }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.category_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
