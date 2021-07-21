@@ -51,6 +51,7 @@ android {
     buildFeatures {
         //noinspection DataBindingWithoutKapt
         dataBinding true
+        viewBinding true
     }
 
 
@@ -100,7 +101,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // Swipe Refresh Layout
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     // navigation component
     def nav_version = "2.3.5"

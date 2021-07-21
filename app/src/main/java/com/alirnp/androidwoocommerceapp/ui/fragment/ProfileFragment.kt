@@ -18,7 +18,7 @@ import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.core.helper.ProductHelper
 import com.alirnp.androidwoocommerceapp.databinding.FragmentProfileBinding
 import com.alirnp.androidwoocommerceapp.model.Product
-import com.alirnp.androidwoocommerceapp.repository.Resource
+import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
 import com.alirnp.androidwoocommerceapp.viewModel.UserViewModel
@@ -29,7 +29,7 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var mContext: Context
     lateinit var navController: NavController
-    private val productRepository = WoocommerceApi.instance.productRepository()
+    private val productRepository = WoocommerceApi.instance.productRepository
 
     private val userViewModel: UserViewModel by activityViewModels()
 
@@ -60,7 +60,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return binding.root
@@ -71,8 +71,6 @@ class ProfileFragment : Fragment() {
         navController = findNavController()
 
         observeUser()
-
-
 
         binding.recyclerView.layoutManager = GridLayoutManager(mContext, 2)
 
@@ -113,16 +111,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun onFailureProducts(resource: Resource<List<Product>>) {
-
-
         val message = resource.message
         Timber.i("onFailureProducts $message")
     }
 
 
     private fun onResponseProducts(resource: Resource<List<Product>>) {
-
-
         val response: List<Product>? = resource.data
         Timber.i("onResponseProducts ${response?.size}")
 

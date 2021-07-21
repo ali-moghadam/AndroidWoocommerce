@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 class UserViewModel : ViewModel() {
 
     var user: MutableLiveData<User?> = MutableLiveData(null)
-    private val wordpressRepository = WoocommerceApi.instance.userRepository()
+    private val wordpressRepository = WoocommerceApi.instance.userRepository
 
     fun login(username: String, password: String): Observable<UserResponse> {
         return wordpressRepository.userLogin(username, password)

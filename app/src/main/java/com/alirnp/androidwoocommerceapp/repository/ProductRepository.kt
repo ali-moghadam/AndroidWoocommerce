@@ -9,6 +9,7 @@ import com.alirnp.androidwoocommerceapp.repository.api.ProductAPI
 import com.alirnp.androidwoocommerceapp.repository.base.WooRepository
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.AppExecutors
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.NetworkBoundResource
+import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
 import com.alirnp.androidwoocommerceapp.repository.roomDB.AppDatabase
 import retrofit2.Call
 import java.util.*
@@ -20,7 +21,7 @@ class ProductRepository(application: Application, baseUrl: String) :
     private val productAPI: ProductAPI = retrofit.create(ProductAPI::class.java)
 
     /**
-     * get list of product
+     * get all products
      */
     fun getProducts(): LiveData<Resource<List<Product>>> {
         val productDao = AppDatabase.getInstance(application).productDao()
@@ -49,8 +50,6 @@ class ProductRepository(application: Application, baseUrl: String) :
     private fun filter(filters: Map<String, String>): Call<List<Product>> {
         return productAPI.filter(filters)
     }
-
-
 
     fun create(product: Product): Call<Product> {
         return productAPI.create(product)

@@ -13,7 +13,7 @@ import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.core.helper.ProductHelper
 import com.alirnp.androidwoocommerceapp.databinding.FragmentMainBinding
 import com.alirnp.androidwoocommerceapp.model.Product
-import com.alirnp.androidwoocommerceapp.repository.Resource
+import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
 import timber.log.Timber
@@ -22,7 +22,7 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: ProductAdapter
-    private val productRepository = WoocommerceApi.instance.productRepository()
+    private val productRepository = WoocommerceApi.instance.productRepository
     private lateinit var mContext: Context
 
     override fun onAttach(context: Context) {
@@ -34,9 +34,9 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+        binding =  FragmentMainBinding.inflate(inflater)
         return binding.root
     }
 
