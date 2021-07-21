@@ -3,13 +3,17 @@ package com.alirnp.androidwoocommerceapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.alirnp.androidwoocommerceapp.R
+import com.alirnp.androidwoocommerceapp.databinding.ItemCategoryBinding
 import com.alirnp.androidwoocommerceapp.databinding.ItemProductBinding
+import com.alirnp.androidwoocommerceapp.model.Category
 import com.alirnp.androidwoocommerceapp.model.Product
 import com.squareup.picasso.Picasso
 
-class ProductAdapter(private val items: List<Product>) :
-    RecyclerView.Adapter<ProductAdapter.Holder>() {
+class CategoryAdapter(private val items: List<Category>) :
+    RecyclerView.Adapter<CategoryAdapter.Holder>() {
 
     private var layoutInflater: LayoutInflater? = null
 
@@ -17,7 +21,8 @@ class ProductAdapter(private val items: List<Product>) :
         if (layoutInflater == null)
             layoutInflater = LayoutInflater.from(parent.context)
 
-        val binding = ItemProductBinding.inflate(layoutInflater!!)
+        //val binding = ItemCategoryBinding.inflate(layoutInflater!!)
+        val binding = DataBindingUtil.inflate<ItemCategoryBinding>(layoutInflater!! , R.layout.item_category,parent , false)
         return Holder(binding, items)
     }
 
@@ -29,7 +34,7 @@ class ProductAdapter(private val items: List<Product>) :
     override fun getItemCount() = items.size
 
 
-    inner class Holder(private val binding: ItemProductBinding, items: List<Product>) :
+    inner class Holder(private val binding: ItemCategoryBinding, items: List<Category>) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -42,19 +47,19 @@ class ProductAdapter(private val items: List<Product>) :
             }
         }
 
-        fun bind(product: Product) {
+        fun bind(category: Category) {
 
             // set product name
-            binding.textViewName.text = product.name
+            binding.textViewName.text = category.name
 
             // load product image into imageView
-            loadProductImage(product)
+            loadProductImage(category)
         }
 
-        private fun loadProductImage(product: Product) {
+        private fun loadProductImage(category: Category) {
 
-            if (product.getFeatureImage().isNotEmpty()) {
-                Picasso.get().load(product.getFeatureImage()).into(binding.imageViewPhoto)
+            category.image?.let { image ->
+                Picasso.get().load(image.src).into(binding.imageViewPhoto)
             }
         }
     }

@@ -6,23 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.alirnp.androidwoocommerceapp.R
+import com.alirnp.androidwoocommerceapp.core.helper.ProductHelper
 import com.alirnp.androidwoocommerceapp.databinding.FragmentCategoryBinding
 import com.alirnp.androidwoocommerceapp.model.Category
+import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
+import com.alirnp.androidwoocommerceapp.ui.adapter.CategoryAdapter
+import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
 import timber.log.Timber
 
 class CategoryFragment : Fragment() {
 
     private val categoryRepository = WoocommerceApi.instance.categoryRepository
-
     private lateinit var binding: FragmentCategoryBinding
+    private lateinit var adapter: CategoryAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentCategoryBinding.inflate(inflater)
         return binding.root
@@ -30,7 +36,8 @@ class CategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
+        initRecyclerView()
         getCategories()
 
     }
@@ -47,7 +54,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun getCategories() {
-        activity?.let { categoryRepository.getCategories().observe(it, categoryObserver) }
+        categoryRepository.getCategories().observe(requireActivity(), categoryObserver)
     }
 
     private fun onFailureCategories(resource: Resource<List<Category>>) {
@@ -58,8 +65,20 @@ class CategoryFragment : Fragment() {
 
     private fun onResponseCategories(resource: Resource<List<Category>>) {
         val response: List<Category>? = resource.data
-        Timber.i("onResponseCategories ${response?.size}")
-        
-        binding.textView.text = "categories size ${response?.size}"
+
+        response?.let { categories ->
+            Timber.i("onResponseCategories ${categories.size}")
+            declareRecyclerView(categories)
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.recyclerView.showShimmerAdapter()
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+    }
+
+    private fun declareRecyclerView(items: List<Category>) {
+        adapter = CategoryAdapter(items)
+        binding.recyclerView.adapter = adapter
     }
 }
