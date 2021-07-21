@@ -19,6 +19,6 @@
         app:shimmer_demo_child_count="10"
         app:shimmer_demo_grid_child_count="2"
         app:shimmer_demo_layout="@layout/layout_demo"
-        tools:listitem="@layout/item_product" />
+        tools:listitem="@layout/item_category" />
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

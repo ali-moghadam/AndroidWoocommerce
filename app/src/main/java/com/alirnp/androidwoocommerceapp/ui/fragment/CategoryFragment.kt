@@ -8,21 +8,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alirnp.androidwoocommerceapp.R
-import com.alirnp.androidwoocommerceapp.core.helper.ProductHelper
+import com.alirnp.androidwoocommerceapp.core.decorator.GridSpacingItemDecoration
 import com.alirnp.androidwoocommerceapp.databinding.FragmentCategoryBinding
 import com.alirnp.androidwoocommerceapp.model.Category
-import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
 import com.alirnp.androidwoocommerceapp.ui.adapter.CategoryAdapter
-import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
 import timber.log.Timber
 
 class CategoryFragment : Fragment() {
 
     private val categoryRepository = WoocommerceApi.instance.categoryRepository
     private lateinit var binding: FragmentCategoryBinding
-    private lateinit var adapter: CategoryAdapter
+    private val spanCount = 2
 
 
     override fun onCreateView(
@@ -38,7 +36,7 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
-        getCategories()
+        observeCategories()
 
     }
 
@@ -53,7 +51,7 @@ class CategoryFragment : Fragment() {
 
     }
 
-    private fun getCategories() {
+    private fun observeCategories() {
         categoryRepository.getCategories().observe(requireActivity(), categoryObserver)
     }
 
@@ -74,11 +72,17 @@ class CategoryFragment : Fragment() {
 
     private fun initRecyclerView() {
         binding.recyclerView.showShimmerAdapter()
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
     }
 
     private fun declareRecyclerView(items: List<Category>) {
-        adapter = CategoryAdapter(items)
-        binding.recyclerView.adapter = adapter
+
+        val space = requireContext().resources.getDimension(R.dimen._10sdp).toInt()
+        val itemDecoration = GridSpacingItemDecoration(spanCount, space, true, 0)
+
+        binding.recyclerView.apply {
+            addItemDecoration(itemDecoration)
+            adapter = CategoryAdapter(items)
+        }
     }
 }

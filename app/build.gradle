@@ -77,9 +77,14 @@ dependencies {
     // GSON
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    // Picasso : Load Images
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
     implementation 'androidx.exifinterface:exifinterface:1.3.0-alpha01'
+
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     // Shimmer : view holder before init recyclerView
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'

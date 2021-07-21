@@ -10,7 +10,14 @@ import com.alirnp.androidwoocommerceapp.databinding.ItemCategoryBinding
 import com.alirnp.androidwoocommerceapp.databinding.ItemProductBinding
 import com.alirnp.androidwoocommerceapp.model.Category
 import com.alirnp.androidwoocommerceapp.model.Product
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCrossFade
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 
 class CategoryAdapter(private val items: List<Category>) :
     RecyclerView.Adapter<CategoryAdapter.Holder>() {
@@ -21,8 +28,8 @@ class CategoryAdapter(private val items: List<Category>) :
         if (layoutInflater == null)
             layoutInflater = LayoutInflater.from(parent.context)
 
-        //val binding = ItemCategoryBinding.inflate(layoutInflater!!)
-        val binding = DataBindingUtil.inflate<ItemCategoryBinding>(layoutInflater!! , R.layout.item_category,parent , false)
+        val binding = ItemCategoryBinding.inflate(layoutInflater!!)
+        //  val binding = DataBindingUtil.inflate<ItemCategoryBinding>(layoutInflater!! , R.layout.item_category,parent , false)
         return Holder(binding, items)
     }
 
@@ -59,7 +66,11 @@ class CategoryAdapter(private val items: List<Category>) :
         private fun loadProductImage(category: Category) {
 
             category.image?.let { image ->
-                Picasso.get().load(image.src).into(binding.imageViewPhoto)
+                Glide.with(binding.root.context)
+                    .load(image.src)
+                    .apply(RequestOptions().override(1000, 1000))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(binding.imageViewPhoto)
             }
         }
     }
