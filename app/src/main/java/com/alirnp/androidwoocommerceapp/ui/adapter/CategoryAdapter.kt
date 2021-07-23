@@ -19,16 +19,11 @@ class CategoryAdapter(private val items: List<Category>) :
 
     private var layoutInflater: LayoutInflater? = null
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-    }
-
     override fun getItemViewType(position: Int): Int {
         if (items.isEmpty())
             return TYPE_EMPTY_STATE
 
         return super.getItemViewType(position)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

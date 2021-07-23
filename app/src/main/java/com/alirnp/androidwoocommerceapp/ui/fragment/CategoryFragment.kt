@@ -2,6 +2,7 @@ package com.alirnp.androidwoocommerceapp.ui.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -73,6 +74,10 @@ class CategoryFragment : Fragment() {
 
         val message = resource.message
         Timber.i("onFailureCategories $message")
+
+        context?.let { ctx ->
+            Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
 

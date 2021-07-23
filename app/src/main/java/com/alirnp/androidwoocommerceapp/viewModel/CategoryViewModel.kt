@@ -13,8 +13,6 @@ class CategoryViewModel @Inject constructor() : ViewModel() {
 
     private val _categories = MediatorLiveData<Resource<List<Category>>>()
     val categories: LiveData<Resource<List<Category>>> get() = _categories
-    private var categoriesSource: LiveData<Resource<List<Category>>> = MutableLiveData()
-
 
     /**
      * get all categories
@@ -22,9 +20,7 @@ class CategoryViewModel @Inject constructor() : ViewModel() {
     fun fetchCategories() = getCategories()
 
     private fun getCategories()  {
-        _categories.removeSource(categoriesSource) // We make sure there is only one source of livedata (allowing us properly refresh)
-        categoriesSource = categoryRepository.getCategories()
-        _categories.addSource(categoriesSource) {
+        _categories.addSource(categoryRepository.getCategories()) {
             _categories.value = it
         }
     }
