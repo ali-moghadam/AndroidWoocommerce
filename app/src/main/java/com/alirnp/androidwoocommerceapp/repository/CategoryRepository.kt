@@ -25,6 +25,7 @@ class CategoryRepository(application: Application, baseUrl: String) :
 
         return object : NetworkBoundResource<List<Category>, List<Category>>(AppExecutors()) {
             override fun saveCallResult(item: List<Category>) {
+                categoryDao.deleteAll()
                 categoryDao.insertAll(item)
             }
 

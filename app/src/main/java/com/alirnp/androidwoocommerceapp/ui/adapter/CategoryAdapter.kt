@@ -3,45 +3,66 @@ package com.alirnp.androidwoocommerceapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alirnp.androidwoocommerceapp.R
+import com.alirnp.androidwoocommerceapp.core.constant.TYPE_EMPTY_STATE
 import com.alirnp.androidwoocommerceapp.databinding.ItemCategoryBinding
-import com.alirnp.androidwoocommerceapp.databinding.ItemProductBinding
+import com.alirnp.androidwoocommerceapp.databinding.ItemEmptyStateBinding
 import com.alirnp.androidwoocommerceapp.model.Category
-import com.alirnp.androidwoocommerceapp.model.Product
+import com.alirnp.androidwoocommerceapp.ui.adapter.recyclerView.EmptyStateHolder
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCrossFade
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.FitCenter
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 
 class CategoryAdapter(private val items: List<Category>) :
-    RecyclerView.Adapter<CategoryAdapter.Holder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var layoutInflater: LayoutInflater? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (items.isEmpty())
+            return TYPE_EMPTY_STATE
+
+        return super.getItemViewType(position)
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (layoutInflater == null)
             layoutInflater = LayoutInflater.from(parent.context)
 
-        val binding = ItemCategoryBinding.inflate(layoutInflater!!)
-        //  val binding = DataBindingUtil.inflate<ItemCategoryBinding>(layoutInflater!! , R.layout.item_category,parent , false)
-        return Holder(binding, items)
+        return if (viewType == TYPE_EMPTY_STATE) {
+            val binding = ItemEmptyStateBinding.inflate(layoutInflater!!)
+            EmptyStateHolder(binding)
+
+        } else {
+            val binding = ItemCategoryBinding.inflate(layoutInflater!!)
+            CategoryHolder(binding, items)
+        }
+
+
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        val item = items[position]
-        holder.bind(item)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is CategoryHolder) {
+            val item = items[position]
+            holder.bind(item)
+        }
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() : Int {
+        return if (items.isEmpty())
+            1
+        else
+            items.size
+    }
 
 
-    inner class Holder(private val binding: ItemCategoryBinding, items: List<Category>) :
+    inner class CategoryHolder(private val binding: ItemCategoryBinding, items: List<Category>) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
