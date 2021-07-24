@@ -6,9 +6,11 @@ import androidx.annotation.NonNull
 import androidx.multidex.MultiDexApplication
 import com.alirnp.androidwoocommerceapp.BuildConfig
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 
+@HiltAndroidApp
 class MyApplication : MultiDexApplication() {
 
     override fun onCreate() {

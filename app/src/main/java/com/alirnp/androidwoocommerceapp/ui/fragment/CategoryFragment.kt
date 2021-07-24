@@ -1,26 +1,27 @@
 package com.alirnp.androidwoocommerceapp.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.core.decorator.GridSpacingItemDecoration
 import com.alirnp.androidwoocommerceapp.databinding.FragmentCategoryBinding
 import com.alirnp.androidwoocommerceapp.model.Category
-import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
 import com.alirnp.androidwoocommerceapp.ui.adapter.CategoryAdapter
+import com.alirnp.androidwoocommerceapp.viewModel.CategoryViewModel
 import timber.log.Timber
 
 class CategoryFragment : Fragment() {
 
-    private val categoryRepository = WoocommerceApi.instance.categoryRepository
+    private val categoryViewModel: CategoryViewModel by viewModels()
     private lateinit var binding: FragmentCategoryBinding
-    private val spanCount = 2
+
+    private var defaultSpanCount = 2
 
 
     override fun onCreateView(
@@ -29,6 +30,7 @@ class CategoryFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentCategoryBinding.inflate(inflater)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -36,15 +38,23 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+        setupSweepRefreshLayout()
         observeCategories()
 
+        fetchCategories()
+
+    }
+
+    private fun setupSweepRefreshLayout() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            fetchCategories()
+        }
     }
 
     // Create the observer which updates the UI.
     private val categoryObserver = Observer<Resource<List<Category>>> { resource ->
-        // Update the UI, in this case, a TextView.
         when (resource) {
-            is Resource.Loading -> Timber.i("getting all categories..")
+            is Resource.Loading -> Timber.i("trying to get all categories..")
             is Resource.Success -> onResponseCategories(resource)
             is Resource.Error -> onFailureCategories(resource)
         }
@@ -52,16 +62,28 @@ class CategoryFragment : Fragment() {
     }
 
     private fun observeCategories() {
-        categoryRepository.getCategories().observe(requireActivity(), categoryObserver)
+        categoryViewModel.categories.observe(requireActivity(), categoryObserver)
+    }
+
+    private fun fetchCategories() {
+        categoryViewModel.fetchCategories()
     }
 
     private fun onFailureCategories(resource: Resource<List<Category>>) {
+        binding.swipeRefreshLayout.isRefreshing = false
+
         val message = resource.message
         Timber.i("onFailureCategories $message")
+
+        context?.let { ctx ->
+            Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
 
     private fun onResponseCategories(resource: Resource<List<Category>>) {
+        binding.swipeRefreshLayout.isRefreshing = false
+
         val response: List<Category>? = resource.data
 
         response?.let { categories ->
@@ -71,18 +93,35 @@ class CategoryFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        binding.recyclerView.showShimmerAdapter()
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
+        binding.recyclerView.apply {
+            val space = context.resources.getDimension(R.dimen._10sdp).toInt()
+            val itemDecoration = GridSpacingItemDecoration(defaultSpanCount, space, true, 0)
+
+            addItemDecoration(itemDecoration)
+            showShimmerAdapter()
+            layoutManager = GridLayoutManager(requireContext(), defaultSpanCount)
+        }
     }
 
     private fun declareRecyclerView(items: List<Category>) {
 
-        val space = requireContext().resources.getDimension(R.dimen._10sdp).toInt()
-        val itemDecoration = GridSpacingItemDecoration(spanCount, space, true, 0)
+        context?.let {
+            binding.recyclerView.apply {
+                if (items.isEmpty()) {
+                    layoutManager = GridLayoutManager(requireContext(), 1)
+                    adapter = CategoryAdapter(listOf())
 
-        binding.recyclerView.apply {
-            addItemDecoration(itemDecoration)
-            adapter = CategoryAdapter(items)
+                } else {
+                    layoutManager = GridLayoutManager(requireContext(), defaultSpanCount)
+                    adapter = CategoryAdapter(items)
+                }
+
+            }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.category_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

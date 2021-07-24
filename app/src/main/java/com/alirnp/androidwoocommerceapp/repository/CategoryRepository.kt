@@ -2,10 +2,12 @@ package com.alirnp.androidwoocommerceapp.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import com.alirnp.androidwoocommerceapp.core.helper.NetworkHelper
 import com.alirnp.androidwoocommerceapp.model.Category
 import com.alirnp.androidwoocommerceapp.repository.api.CategoryAPI
 import com.alirnp.androidwoocommerceapp.repository.base.WooRepository
+import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.ApiResponse
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.AppExecutors
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.NetworkBoundResource
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
@@ -25,6 +27,7 @@ class CategoryRepository(application: Application, baseUrl: String) :
 
         return object : NetworkBoundResource<List<Category>, List<Category>>(AppExecutors()) {
             override fun saveCallResult(item: List<Category>) {
+                categoryDao.deleteAll()
                 categoryDao.insertAll(item)
             }
 
@@ -33,6 +36,7 @@ class CategoryRepository(application: Application, baseUrl: String) :
             override fun loadFromDb() = categoryDao.getAll()
 
             override fun createCall() = categoryAPI.getAllCategories()
+
         }.asLiveData()
     }
 }

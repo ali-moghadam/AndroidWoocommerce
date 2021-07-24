@@ -21,4 +21,7 @@ interface CategoryDao {
 
     @Delete
     fun delete(product: Category): Completable
+
+    @Query("DELETE FROM category")
+    fun deleteAll()
 }

@@ -13,4 +13,6 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="forget_password">Forget password</string>
+    <string name="collections">Collections</string>
+    <string name="no_item">There is no item to display</string>
 </resources>
