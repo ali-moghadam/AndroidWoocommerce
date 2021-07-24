@@ -13,9 +13,6 @@ interface ProductAPI {
     @GET("products")
     fun getAllProducts(): LiveData<ApiResponse<List<Product>>>
 
-    @get:GET("products")
-    val products: Call<ArrayList<Product>>
-
     @get:GET("products/count")
     val productsCount: Call<List<Product>>
 

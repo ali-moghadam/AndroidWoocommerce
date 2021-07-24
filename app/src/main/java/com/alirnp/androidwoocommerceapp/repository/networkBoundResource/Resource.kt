@@ -1,4 +1,4 @@
-package com.alirnp.androidwoocommerceapp.repository
+package com.alirnp.androidwoocommerceapp.repository.networkBoundResource
 
 // A generic class that contains data and status about loading this data.
 sealed class Resource<T>(

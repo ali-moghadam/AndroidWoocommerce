@@ -4,7 +4,6 @@ import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.alirnp.androidwoocommerceapp.repository.Resource
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network.
@@ -27,9 +26,12 @@ abstract class NetworkBoundResource<ResultType, RequestType>
         result.addSource(dbSource) { data ->
             result.removeSource(dbSource)
             setValue(Resource.Success(data, false))
-            if (shouldFetch(data)) {
+
+            if (shouldFetch(data))
                 fetchFromNetwork(dbSource)
-            }
+            else
+                networkUnavailableError()
+
         }
     }
 
@@ -79,6 +81,10 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                 }
             }
         }
+    }
+
+    private fun networkUnavailableError() {
+        result.value = Resource.Error("Network unavailable", null, false)
     }
 
     protected open fun onFetchFailed() {}

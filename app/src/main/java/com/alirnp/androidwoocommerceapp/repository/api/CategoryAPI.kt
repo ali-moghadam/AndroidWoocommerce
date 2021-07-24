@@ -1,10 +1,19 @@
 package com.alirnp.androidwoocommerceapp.repository.api
 
+import androidx.lifecycle.LiveData
 import com.alirnp.androidwoocommerceapp.model.Category
+import com.alirnp.androidwoocommerceapp.model.Product
+import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.ApiResponse
 import retrofit2.Call
 import retrofit2.http.*
 
-interface ProductCategoryAPI {
+interface CategoryAPI {
+
+    /**
+     * get all categories without filter
+     */
+    @GET("products/categories")
+    fun getAllCategories(): LiveData<ApiResponse<List<Category>>>
 
     @Headers("Content-Type: application/json")
     @POST("products/categories")
@@ -12,9 +21,6 @@ interface ProductCategoryAPI {
 
     @GET("products/categories/{id}")
     fun view(@Path("id") id: Int): Call<Category>
-
-    @GET("products/categories")
-    fun list(): Call<List<Category>>
 
     @Headers("Content-Type: application/json")
     @PUT("products/categories/{id}")

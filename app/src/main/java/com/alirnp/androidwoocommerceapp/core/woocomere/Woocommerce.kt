@@ -3,6 +3,7 @@ package com.alirnp.androidwoocommerceapp.core.woocomere
 import android.app.Application
 import com.alirnp.androidwoocommerceapp.Config
 import com.alirnp.androidwoocommerceapp.core.constant.ApiVersion
+import com.alirnp.androidwoocommerceapp.repository.CategoryRepository
 import com.alirnp.androidwoocommerceapp.repository.ProductRepository
 import com.alirnp.androidwoocommerceapp.repository.UserRepository
 
@@ -12,8 +13,9 @@ class Woocommerce(application: Application) {
         private const val siteUrl = Config.URL
     }
 
-    private val productRepository: ProductRepository
-    private val userRepository: UserRepository
+    val productRepository: ProductRepository
+    val categoryRepository : CategoryRepository
+    val userRepository: UserRepository
 
     init {
         val woocommerceApiUrl = "$siteUrl/wp-json/wc/v$apiVersion/"
@@ -22,15 +24,8 @@ class Woocommerce(application: Application) {
         val cartBaseUrl = "$siteUrl/wp-json/cocart/v1/"
 
         productRepository = ProductRepository(application, woocommerceApiUrl)
+        categoryRepository = CategoryRepository(application, woocommerceApiUrl)
         userRepository = UserRepository(application, wordpressUserApiUrl)
 
-    }
-
-    fun productRepository(): ProductRepository {
-        return productRepository
-    }
-
-    fun userRepository(): UserRepository {
-        return userRepository
     }
 }

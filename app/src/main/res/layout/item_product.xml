@@ -44,7 +44,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="@+id/imageView_photo"
             app:layout_constraintTop_toBottomOf="@+id/imageView_photo"
-            tools:text="product name" />
+            tools:text="product" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
