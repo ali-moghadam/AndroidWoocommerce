@@ -1,15 +1,11 @@
 package com.alirnp.androidwoocommerceapp.repository
 
-import android.app.Application
 import com.alirnp.androidwoocommerceapp.model.user.UserResponse
 import com.alirnp.androidwoocommerceapp.repository.api.UserApi
-import com.alirnp.androidwoocommerceapp.repository.base.WooRepository
 import io.reactivex.Observable
+import javax.inject.Inject
 
-class UserRepository(application: Application, baseUrl: String) :
-    WooRepository(application, baseUrl) {
-
-    private val userAPI: UserApi = retrofit.create(UserApi::class.java)
+class UserRepository @Inject constructor(private val userAPI: UserApi) {
 
     /**
      * login user in wordpress api

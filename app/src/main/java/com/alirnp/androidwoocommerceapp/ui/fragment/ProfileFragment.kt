@@ -18,18 +18,21 @@ import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.core.helper.ProductHelper
 import com.alirnp.androidwoocommerceapp.databinding.FragmentProfileBinding
 import com.alirnp.androidwoocommerceapp.model.Product
+import com.alirnp.androidwoocommerceapp.repository.ProductRepository
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
-import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
 import com.alirnp.androidwoocommerceapp.viewModel.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var mContext: Context
     lateinit var navController: NavController
-    private val productRepository = WoocommerceApi.instance.productRepository
+    @Inject lateinit var productRepository : ProductRepository
 
     private val userViewModel: UserViewModel by activityViewModels()
 

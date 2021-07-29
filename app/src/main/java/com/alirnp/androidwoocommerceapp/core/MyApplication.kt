@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.annotation.NonNull
 import androidx.multidex.MultiDexApplication
 import com.alirnp.androidwoocommerceapp.BuildConfig
-import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -15,8 +14,6 @@ class MyApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
-
-        initWoocommerce()
         initTimber()
     }
 
@@ -24,10 +21,6 @@ class MyApplication : MultiDexApplication() {
         if (BuildConfig.DEBUG) {
             Timber.plant(MyTimberTree())
         }
-    }
-
-    private fun initWoocommerce() {
-        WoocommerceApi.init(this)
     }
 
     /** A tree which logs important information for crash reporting.  */

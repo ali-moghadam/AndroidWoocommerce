@@ -4,18 +4,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.alirnp.androidwoocommerceapp.model.user.User
 import com.alirnp.androidwoocommerceapp.model.user.UserResponse
-import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
+import com.alirnp.androidwoocommerceapp.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class UserViewModel : ViewModel() {
+@HiltViewModel
+class UserViewModel @Inject constructor() : ViewModel() {
 
     var user: MutableLiveData<User?> = MutableLiveData(null)
-    private val wordpressRepository = WoocommerceApi.instance.userRepository
+    @Inject lateinit var userRepository : UserRepository
 
     fun login(username: String, password: String): Observable<UserResponse> {
-        return wordpressRepository.userLogin(username, password)
+        return userRepository.userLogin(username, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

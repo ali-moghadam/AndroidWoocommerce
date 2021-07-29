@@ -8,27 +8,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.core.helper.ProductHelper
-import com.alirnp.androidwoocommerceapp.core.helper.filter.ProductFilter
 import com.alirnp.androidwoocommerceapp.databinding.FragmentMainBinding
 import com.alirnp.androidwoocommerceapp.model.Product
-import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
+import com.alirnp.androidwoocommerceapp.repository.ProductRepository
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: ProductAdapter
-    private val productRepository = WoocommerceApi.instance.productRepository
+    @Inject lateinit var productRepository : ProductRepository
     private lateinit var mContext: Context
 
     override fun onAttach(context: Context) {

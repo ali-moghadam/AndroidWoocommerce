@@ -14,8 +14,10 @@ import com.alirnp.androidwoocommerceapp.model.Category
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
 import com.alirnp.androidwoocommerceapp.ui.adapter.CategoryAdapter
 import com.alirnp.androidwoocommerceapp.viewModel.CategoryViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class CategoryFragment : Fragment() {
 
     private val categoryViewModel: CategoryViewModel by viewModels()
