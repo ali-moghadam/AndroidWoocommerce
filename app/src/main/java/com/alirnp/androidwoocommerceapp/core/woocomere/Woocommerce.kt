@@ -6,8 +6,9 @@ import com.alirnp.androidwoocommerceapp.core.constant.ApiVersion
 import com.alirnp.androidwoocommerceapp.repository.CategoryRepository
 import com.alirnp.androidwoocommerceapp.repository.ProductRepository
 import com.alirnp.androidwoocommerceapp.repository.UserRepository
+import javax.inject.Inject
 
-class Woocommerce(application: Application) {
+class Woocommerce @Inject constructor(application: Application) {
     companion object {
         private val apiVersion = ApiVersion.API_VERSION3
         private const val siteUrl = Config.URL

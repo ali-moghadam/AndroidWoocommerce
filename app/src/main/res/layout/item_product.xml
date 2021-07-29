@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    app:cardUseCompatPadding="true"
     app:cardCornerRadius="20dp"
     app:cardPreventCornerOverlap="true"
     app:strokeWidth="1dp"

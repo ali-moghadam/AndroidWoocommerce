@@ -37,7 +37,7 @@ class MyApplication : MultiDexApplication() {
             if (priority == Log.VERBOSE || priority == Log.DEBUG) {
                 return
             }
-            Log.i("LOG_ME", "$message")
+            Log.i("WooApp", message)
         }
     }
 }

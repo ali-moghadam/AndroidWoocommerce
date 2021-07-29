@@ -7,6 +7,7 @@ import com.alirnp.androidwoocommerceapp.core.helper.filter.ProductFilter
 import com.alirnp.androidwoocommerceapp.model.Product
 import com.alirnp.androidwoocommerceapp.repository.api.ProductAPI
 import com.alirnp.androidwoocommerceapp.repository.base.WooRepository
+import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.ApiResponse
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.AppExecutors
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.NetworkBoundResource
 import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
@@ -39,7 +40,30 @@ class ProductRepository(application: Application, baseUrl: String) :
         }.asLiveData()
     }
 
-    fun products(page: Int, per_page: Int): Call<List<Product>> {
+    /**
+     * get filtered products
+     */
+    fun getProducts(productFilter : ProductFilter): LiveData<Resource<List<Product>>> {
+        val productDao = AppDatabase.getInstance(application).productDao()
+
+        return object : NetworkBoundResource<List<Product>, List<Product>>(AppExecutors()) {
+            override fun saveCallResult(item: List<Product>) {
+                productDao.insertAll(item)
+            }
+
+            override fun shouldFetch(data: List<Product>?) = NetworkHelper.isNetworkAvailable(application)
+
+            override fun loadFromDb() = productDao.getAll()
+
+            override fun createCall() = filter(productFilter.filters)
+        }.asLiveData()
+    }
+
+    private fun filter(filters: Map<String, String>):  LiveData<ApiResponse<List<Product>>> {
+        return productAPI.filter(filters)
+    }
+
+    fun products(page: Int, per_page: Int):  LiveData<ApiResponse<List<Product>>> {
         val productFilter = ProductFilter()
         productFilter.page = page
         productFilter.per_page = per_page
@@ -47,9 +71,6 @@ class ProductRepository(application: Application, baseUrl: String) :
         return filter(productFilter.filters)
     }
 
-    private fun filter(filters: Map<String, String>): Call<List<Product>> {
-        return productAPI.filter(filters)
-    }
 
     fun create(product: Product): Call<Product> {
         return productAPI.create(product)
@@ -60,18 +81,18 @@ class ProductRepository(application: Application, baseUrl: String) :
         return productAPI.view(id)
     }
 
-    fun products(productFilter: ProductFilter): Call<List<Product>> {
+    fun products(productFilter: ProductFilter):  LiveData<ApiResponse<List<Product>>> {
         return filter(productFilter.filters)
     }
 
-    fun search(term: String): Call<List<Product>> {
+    fun search(term: String):  LiveData<ApiResponse<List<Product>>> {
         val productFilter = ProductFilter()
         productFilter.search = term
 
         return filter(productFilter.filters)
     }
 
-    fun products(page: Int): Call<List<Product>> {
+    fun products(page: Int):  LiveData<ApiResponse<List<Product>>> {
         val productFilter = ProductFilter()
         productFilter.page = page
 
@@ -90,7 +111,7 @@ class ProductRepository(application: Application, baseUrl: String) :
         return productAPI.delete(id, force)
     }
 
-    fun products(filters: HashMap<String, String>): Call<List<Product>> {
+    fun products(filters: HashMap<String, String>):  LiveData<ApiResponse<List<Product>>> {
         return productAPI.filter(filters)
     }
 }

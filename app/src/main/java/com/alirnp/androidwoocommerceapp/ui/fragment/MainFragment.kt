@@ -1,22 +1,28 @@
 package com.alirnp.androidwoocommerceapp.ui.fragment
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alirnp.androidwoocommerceapp.R
 import com.alirnp.androidwoocommerceapp.core.helper.ProductHelper
+import com.alirnp.androidwoocommerceapp.core.helper.filter.ProductFilter
 import com.alirnp.androidwoocommerceapp.databinding.FragmentMainBinding
 import com.alirnp.androidwoocommerceapp.model.Product
-import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
 import com.alirnp.androidwoocommerceapp.repository.api.WoocommerceApi
+import com.alirnp.androidwoocommerceapp.repository.networkBoundResource.Resource
 import com.alirnp.androidwoocommerceapp.ui.adapter.ProductAdapter
 import timber.log.Timber
+
 
 class MainFragment : Fragment() {
 
@@ -36,7 +42,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding =  FragmentMainBinding.inflate(inflater)
+        binding = FragmentMainBinding.inflate(inflater)
         return binding.root
     }
 
@@ -45,9 +51,28 @@ class MainFragment : Fragment() {
 
         initSwipeRefreshLayout()
         initRecyclerView()
+        setupClickListeners()
+        configSearchView()
 
         getProducts()
 
+    }
+
+    private fun configSearchView() {
+        val searchIcon: ImageView =
+            binding.searchView.findViewById(androidx.appcompat.R.id.search_mag_icon)
+
+        // change icon color
+        searchIcon.setColorFilter(
+            ContextCompat.getColor(requireContext(), R.color.icon_color),
+            PorterDuff.Mode.SRC_IN
+        )
+    }
+
+    private fun setupClickListeners() {
+        binding.frameLayoutFilter.setOnClickListener {
+            Toast.makeText(it.context, "Filter anything", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun initSwipeRefreshLayout() {
@@ -65,6 +90,13 @@ class MainFragment : Fragment() {
     private fun getProducts() {
         // TODO: 4/20/2021 check it
         activity?.let { productRepository.getProducts().observe(it, productsObserver) }
+
+/*        val productFilter = ProductFilter()
+        productFilter.category = 12
+        activity?.let { productRepository.getProducts(productFilter).observe(it, productsObserver) }*/
+    }
+
+    private fun getCategories() {
     }
 
     private fun onFailureProducts(resource: Resource<List<Product>>) {

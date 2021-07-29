@@ -25,6 +25,8 @@
     <color name="gray">#CFD8DC</color>
     <color name="gray_light">#f5f5f5</color>
     <color name="gray_background">#f0f5f5</color>
+    <color name="gray_background_2">#f4f5f7</color>
+    <color name="icon_color">#808289</color>
     <color name="inactive">#81858e</color>
 
     <!--  Transparent  -->

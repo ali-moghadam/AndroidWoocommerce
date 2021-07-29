@@ -13,6 +13,9 @@ interface ProductAPI {
     @GET("products")
     fun getAllProducts(): LiveData<ApiResponse<List<Product>>>
 
+    @GET("products")
+    fun filter(@QueryMap filter: Map<String, String>): LiveData<ApiResponse<List<Product>>>
+
     @get:GET("products/count")
     val productsCount: Call<List<Product>>
 
@@ -24,10 +27,6 @@ interface ProductAPI {
 
     @GET("products")
     fun search(@Query("search") search: String): Call<ArrayList<Product>>
-
-    @GET("products")
-    fun filter(@QueryMap filter: Map<String, String>): Call<List<Product>>
-
 
     @Headers("Content-Type: application/json")
     @POST("products")
